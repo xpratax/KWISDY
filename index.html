@@ -3,55 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KWIZDY</title>
+  <title>KWIZDY — SITUAÇÃO 1 / +18</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     :root{
       --bg:#030115;
       --neon:#7df6ff;
       --accent:#b86bff;
-      --glass: rgba(255,255,255,0.04);
-      font-family: Inter, system-ui, Arial;
+      --danger:#ff4d6d;
+      --glass: rgba(255,255,255,0.03);
+      font-family: Inter, system-ui, Arial, sans-serif;
     }
-    html,body{height:100%;margin:0;background:var(--bg);color:#e8f9fb}
-    .app{display:grid;grid-template-columns:1fr 320px;gap:20px;padding:28px}
+    html,body{height:100%;margin:0;background:
+      radial-gradient(ellipse at 10% 10%, rgba(120,20,200,0.12), transparent 10%),
+      radial-gradient(ellipse at 90% 90%, rgba(10,200,240,0.06), transparent 10%),
+      var(--bg); color:#e8f9fb}
+    .app{display:grid;grid-template-columns:1fr 320px;gap:20px;padding:28px;align-items:start}
     header{grid-column:1/3;display:flex;align-items:center;gap:16px}
-    h1{margin:0;font-size:22px;color:var(--neon);text-shadow:0 0 12px rgba(125,246,255,0.25)}
+    .logo{display:flex;flex-direction:column}
+    h1{margin:0;font-size:22px;letter-spacing:2px;color:var(--neon);text-shadow:0 0 12px rgba(125,246,255,0.18)}
     .sub{color:rgba(255,255,255,0.6);font-size:13px}
-    .card{background:rgba(255,255,255,0.02);border-radius:12px;padding:18px;box-shadow:0 6px 30px rgba(0,0,0,0.6)}
-    .btn{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:10px 14px;border-radius:10px;color:var(--neon);cursor:pointer;text-transform:uppercase;font-weight:600}
-    .btn:hover{box-shadow:0 0 18px rgba(125,246,255,0.12)}
+    .controls{display:flex;gap:12px;align-items:center}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:10px 14px;border-radius:10px;color:var(--neon);cursor:pointer;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+    .btn:hover{box-shadow:0 0 18px rgba(125,246,255,0.08)}
+    .btn-plus18{background:linear-gradient(90deg,#ff748b,#ff4d6d);color:#1a0710;border:1px solid rgba(255,77,109,0.15);box-shadow:0 6px 24px rgba(255,77,109,0.12)}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border-radius:12px;padding:18px;box-shadow:0 6px 30px rgba(0,0,0,0.6)}
     .quiz-area{margin-top:18px}
     .question{font-size:18px;margin-bottom:12px}
-    .answers{display:flex;flex-direction:column;gap:8px}
-    .choice{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);cursor:pointer}
-    .choice:hover{transform:translateX(6px)}
-    .result{margin-top:16px;padding:12px;border-radius:10px;background:rgba(0,0,0,0.35)}
-    .ads{position:sticky;top:28px}
-    .muted{color:#9fb6b9;font-size:12px}
+    .answers{display:flex;flex-direction:column;gap:10px}
+    .choice{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:var(--glass);cursor:pointer;transition:transform .14s, box-shadow .14s}
+    .choice:hover{transform:translateX(6px);box-shadow:0 10px 24px rgba(0,0,0,0.45)}
+    .muted{color:#9fb6b9;font-size:13px}
+    .ads{position:sticky;top:28px;height:calc(100vh - 56px);overflow:auto}
     footer{grid-column:1/3;margin-top:20px;color:#7fbfc2;font-size:12px}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:grid;place-items:center}
-    .box-confirm{width:420px;padding:22px;border-radius:12px;background:rgba(20,20,20,0.9)}
-    label.checkbox{display:flex;gap:10px;align-items:center}
+
+    /* immersive +18 mode */
+    .immersive {
+      position:fixed;inset:0;background:linear-gradient(180deg, rgba(4,6,14,0.98), rgba(0,0,0,0.98));display:flex;align-items:center;justify-content:center;z-index:60;padding:24px;
+    }
+    .immersive .panel{width:900px;max-width:96vw;border-radius:14px;padding:22px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));box-shadow:0 30px 80px rgba(0,0,0,0.8)}
+    .progress{height:12px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;margin-top:12px}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--neon),var(--accent));width:0%}
+    .big{font-size:20px}
+    .center{text-align:center}
+    .final-screen{padding:18px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));margin-top:12px}
+    .tag{font-size:13px;color:#bfeff6}
   </style>
 </head>
 <body>
-  <div class="app">
+  <div class="app" id="mainApp">
     <header>
-      <div>
+      <div class="logo">
         <h1>KWIZDY</h1>
         <div class="sub">Quiz de Ação & Reação</div>
       </div>
       <div style="flex:1"></div>
       <div class="controls">
         <button id="startBtn" class="btn">SITUAÇÃO 1</button>
+        <button id="plus18Btn" class="btn btn-plus18">+18</button>
       </div>
     </header>
 
-    <main class="card">
+    <main class="card" id="mainCard">
       <div class="quiz-area" id="quizArea">
         <p class="muted">Situação: <strong>Uma garota conhecida, amiga próxima, deita no seu colo enquanto assiste.</strong></p>
-        <div id="game"><div class="muted" id="status">Pressione "SITUAÇÃO 1" para começar.</div></div>
+        <div id="game" style="margin-top:12px">
+          <div class="muted small" id="status">Pressione "SITUAÇÃO 1" ou "+18" para começar.</div>
+        </div>
       </div>
       <div class="result" id="result" style="display:none"></div>
     </main>
@@ -59,218 +77,191 @@
     <aside class="ads">
       <div class="card ad-container">
         <h3 style="margin-top:0;color:var(--accent)">Caixa de anúncios</h3>
-        <div class="ad-box" id="adsBox">Carregando anúncios...</div>
-        <p class="muted">Conteúdo vem de ads.html</p>
+        <div class="ad-box" id="adsBox">Carregando anúncios do arquivo <code>ads.html</code>...</div>
+        <p class="muted small">Coloque frases curtas ou anúncios em ads.html no mesmo repositório; o conteúdo será carregado aqui.</p>
       </div>
       <div style="height:12px"></div>
       <div class="card">
-        <h4 style="margin:0;color:var(--neon)">Resumo</h4>
+        <h4 style="margin:0;color:var(--neon)">Resumo do Caminho</h4>
         <div id="pathSummary" class="muted" style="padding-top:8px">Nenhuma ação registrada.</div>
       </div>
     </aside>
 
-    <footer>Feito com ♥ por DRYNY — Evite ações ilegais.</footer>
+    <footer>Feito com ♥ por KWIZDY — Evite ações ilegais. </footer>
   </div>
 
-  <div id="confirmModal" class="overlay" style="display:none">
-    <div class="box-confirm">
-      <h3 style="margin:0 0 8px 0;color:var(--neon)">Aviso — +18</h3>
-      <p class="muted">Este conteúdo é fictício. Confirme que tem 18 anos ou mais.</p>
-      <label class="checkbox"><input type="checkbox" id="ageCheck"> Confirmo ter 18 anos.</label>
-      <div style="text-align:right;margin-top:12px">
+  <!-- confirma +18 -->
+  <div id="confirmModal" class="overlay" style="display:none;position:fixed;inset:0;place-items:center;background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.75));z-index:50;display:grid">
+    <div class="box-confirm" style="width:460px;padding:20px;border-radius:12px;background:rgba(10,10,12,0.95)">
+      <h3 style="margin:0 0 8px 0;color:var(--neon)">Aviso — Somente maiores de 18 anos</h3>
+      <p class="muted">Este modo traz conteúdo de tom adulto/sugestivo. Confirme que você tem 18 anos ou mais e que todos os envolvidos são adultos.</p>
+      <label style="display:flex;gap:10px;align-items:center;margin-top:8px"><input type="checkbox" id="ageCheck"> Confirmo que sou maior de 18 anos.</label>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px;gap:8px">
         <button id="cancelConfirm" class="btn">Cancelar</button>
-        <button id="okConfirm" class="btn">Iniciar</button>
+        <button id="okConfirm" class="btn btn-plus18">Entrar no modo +18</button>
       </div>
     </div>
   </div>
 
+  <!-- immersive +18 container (inserido dinamicamente) -->
+  <div id="immersiveRoot" style="display:none"></div>
+
   <script>
-    const QUESTIONS = [
-      {
-        q:"Ela deita no seu colo. Qual sua reação inicial?",
-        opts:[
-          {t:"Deixar como está",r:"Ela relaxa, ambiente continua tranquilo.",tag:"calmo"},
-          {t:"Fazer carinho no cabelo",r:"Ela sorri discretamente.",tag:"aprox"},
-          {t:"Tentar se afastar",r:"Ela percebe e se levanta sem graça.",tag:"dist"},
-          {t:"Fazer piada",r:"Ela ri, mas o clima muda para descontraído.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela comenta: 'Você é confortável'. O que faz?",
-        opts:[
-          {t:"Agradece",r:"Clima leve permanece.",tag:"calmo"},
-          {t:"Diz que ela também é",r:"Ela olha nos seus olhos.",tag:"aprox"},
-          {t:"Ignora",r:"Ela fica sem graça.",tag:"dist"},
-          {t:"Faz brincadeira",r:"Ela ri.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela segura levemente seu braço. Sua ação?",
-        opts:[
-          {t:"Permanece quieto",r:"Ela continua próxima.",tag:"calmo"},
-          {t:"Segura de volta",r:"Ela se aproxima ainda mais.",tag:"aprox"},
-          {t:"Puxa o braço",r:"Ela se afasta.",tag:"dist"},
-          {t:"Muda de assunto",r:"Clima quebra.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela encosta a cabeça no seu peito. Você:",
-        opts:[
-          {t:"Respira fundo e deixa",r:"Ela relaxa mais.",tag:"calmo"},
-          {t:"Abraça de leve",r:"Ela se sente acolhida.",tag:"aprox"},
-          {t:"Se ajeita para afastar",r:"Ela percebe e se distancia.",tag:"dist"},
-          {t:"Comenta sobre o filme",r:"Foco muda.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela pergunta se você está confortável.",
-        opts:[
-          {t:"Diz que sim",r:"Ela sorri.",tag:"calmo"},
-          {t:"Responde 'Mais ainda com você'",r:"Ela fica corada.",tag:"aprox"},
-          {t:"Diz que prefere espaço",r:"Ela se afasta triste.",tag:"dist"},
-          {t:"Responde em tom de piada",r:"Ela dá risada.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela segura sua mão. Você:",
-        opts:[
-          {t:"Não reage",r:"Ela segura firme.",tag:"calmo"},
-          {t:"Aperta suavemente",r:"Ela encara seus olhos.",tag:"aprox"},
-          {t:"Tira a mão",r:"Ela fica desapontada.",tag:"dist"},
-          {t:"Faz piada",r:"Ela ri.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela suspira aliviada.",
-        opts:[
-          {t:"Ignora",r:"Continua relaxada.",tag:"calmo"},
-          {t:"Pergunta se está bem",r:"Ela diz que sim, feliz.",tag:"aprox"},
-          {t:"Se afasta",r:"Ela fica confusa.",tag:"dist"},
-          {t:"Brinca com a situação",r:"Ela sorri.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela te olha fixamente.",
-        opts:[
-          {t:"Sorri de volta",r:"Ela aproxima o rosto.",tag:"aprox"},
-          {t:"Desvia o olhar",r:"Clima quebra.",tag:"dist"},
-          {t:"Pergunta 'que foi?'",r:"Ela disfarça.",tag:"neutro"},
-          {t:"Mantém expressão calma",r:"Ela relaxa.",tag:"calmo"},
-        ]
-      },
-      {
-        q:"Ela pergunta: 'Confia em mim?'",
-        opts:[
-          {t:"Responde 'sim'",r:"Ela sorri confiante.",tag:"aprox"},
-          {t:"Diz que não sabe",r:"Ela se entristece.",tag:"dist"},
-          {t:"Faz piada",r:"Ela ri mas muda clima.",tag:"neutro"},
-          {t:"Confirma de forma séria",r:"Ela relaxa próxima.",tag:"calmo"},
-        ]
-      },
-      {
-        q:"Ela apoia a perna sobre você.",
-        opts:[
-          {t:"Permanece neutro",r:"Ela se acomoda.",tag:"calmo"},
-          {t:"Coloca a mão por cima",r:"Ela aproxima mais.",tag:"aprox"},
-          {t:"Afasta a perna",r:"Ela recua sem graça.",tag:"dist"},
-          {t:"Brinca com a situação",r:"Ela dá risada.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela pergunta se gosta dela.",
-        opts:[
-          {t:"Diz que sim como amiga",r:"Ela sorri contida.",tag:"calmo"},
-          {t:"Diz que sim de outro jeito",r:"Ela cora e sorri.",tag:"aprox"},
-          {t:"Diz que não",r:"Ela se afasta magoada.",tag:"dist"},
-          {t:"Desvia com piada",r:"Ela fica confusa.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela chega mais perto do rosto.",
-        opts:[
-          {t:"Permanece quieto",r:"Ela hesita.",tag:"calmo"},
-          {t:"Aproxima também",r:"Ela quase beija.",tag:"aprox"},
-          {t:"Se afasta",r:"Ela recua envergonhada.",tag:"dist"},
-          {t:"Fala de qualquer outra coisa",r:"Clima quebra.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela pergunta se pode confiar no que sente.",
-        opts:[
-          {t:"Responde 'sim'",r:"Ela relaxa confiante.",tag:"aprox"},
-          {t:"Diz que não tem certeza",r:"Ela fica pensativa.",tag:"calmo"},
-          {t:"Responde 'não'",r:"Ela se afasta.",tag:"dist"},
-          {t:"Desvia com humor",r:"Ela ri sem graça.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela segura seu rosto.",
-        opts:[
-          {t:"Não reage",r:"Ela fica confusa.",tag:"calmo"},
-          {t:"Segura a mão dela",r:"Ela sorri calorosamente.",tag:"aprox"},
-          {t:"Afasta o rosto",r:"Ela se entristece.",tag:"dist"},
-          {t:"Brinca 'o que é isso?'",r:"Ela ri.",tag:"neutro"},
-        ]
-      },
-      {
-        q:"Ela fica em silêncio esperando.",
-        opts:[
-          {t:"Mantém silêncio",r:"Ela continua ali calma.",tag:"calmo"},
-          {t:"Se aproxima",r:"Ela retribui com carinho.",tag:"aprox"},
-          {t:"Se levanta e sai",r:"Ela fica confusa.",tag:"dist"},
-          {t:"Quebra silêncio com piada",r:"Ela ri e o clima muda.",tag:"neutro"},
-        ]
-      }
+    /****************************************************************
+     * Modo +18 — estrutura, perguntas e lógica de pontuação
+     * Linguagem sugestiva/formal; locais: mãos, pés, coxas, 🍑, florzinha 🌸
+     ****************************************************************/
+
+    // perguntas 20 — cada pergunta apresenta uma AÇÃO (ex.: "Você decide beijar.")
+    // e as opções são locais. Cada opção tem: texto (ação+local), reação e peso (pontos).
+    const QUESTIONS_18 = [
+      { q: 'Ação 1 — Você decide beijar de forma carinhosa. Onde você direciona esse gesto?', opts:[
+        {loc:'mãos', text:'Beijar as mãos com ternura', react:'Ela sorri, mostrando carinho contido.', pts:1},
+        {loc:'pés', text:'Aproximar-se e beijar os pés de leve', react:'Ela se surpreende e ri discretamente.', pts:1},
+        {loc:'coxas', text:'Trazer um beijo suave nas coxas', react:'Ela se afasta por um momento, avaliando.', pts:2},
+        {loc:'🍑', text:'Beijar a região posterior (🍑) com delicadeza', react:'Ela fica visivelmente impressionada e mais próxima.', pts:3},
+        {loc:'florzinha 🌸', text:'Beijar a florzinha 🌸 com cuidado', react:'Ela fecha os olhos, demonstrando confiança.', pts:4}
+      ]},
+      { q: 'Ação 2 — Você faz um toque intuitivo. Em qual local?', opts:[
+        {loc:'mãos', text:'Entrelaçar os dedos e segurar as mãos', react:'Ela aperta sua mão, sorrindo.', pts:1},
+        {loc:'pés', text:'Tocar levemente os pés enquanto conversa', react:'Ela solta uma risada tímida.', pts:1},
+        {loc:'coxas', text:'Deslizar a mão pela coxa com cuidado', react:'Ela aproxima a perna, receptiva.', pts:2},
+        {loc:'🍑', text:'Encostar a palma sobre a região posterior (🍑)', react:'Ela respira mais fundo e não recua.', pts:3},
+        {loc:'florzinha 🌸', text:'Acariciar a florzinha 🌸 por cima da roupa', react:'Ela suspira, mostrando aprovação.', pts:4}
+      ]},
+      { q: 'Ação 3 — Você sussurra algo íntimo. Qual gesto acompanha?', opts:[
+        {loc:'mãos', text:'Segurar as mãos enquanto sussurra', react:'Ela acaricia sua mão em retorno.', pts:1},
+        {loc:'pés', text:'Rolar os pés sobre os seus enquanto fala baixo', react:'Ela sorri de lado, encantada.', pts:1},
+        {loc:'coxas', text:'Apertar levemente a coxa ao sussurrar', react:'Ela se inclina em sua direção.', pts:2},
+        {loc:'🍑', text:'Passar a mão sobre a região posterior (🍑) ao sussurrar', react:'Ela se arrepia e fica mais íntima.', pts:3},
+        {loc:'florzinha 🌸', text:'Fazer um afago na florzinha 🌸 enquanto fala', react:'Ela fecha os olhos, rendida.', pts:4}
+      ]},
+      { q: 'Ação 4 — Você propõe um abraço mais prolongado. Onde suas mãos descansam?', opts:[
+        {loc:'mãos', text:'Abraço com as mãos sobre os ombros', react:'Ela retribui com aconchego.', pts:1},
+        {loc:'pés', text:'Abraço enquanto as pernas se tocam', react:'Ela se acomoda confortavelmente.', pts:1},
+        {loc:'coxas', text:'Abraço apoiando as mãos nas coxas', react:'Ela sorri, tocada.', pts:2},
+        {loc:'🍑', text:'Abraço aproximando a região posterior (🍑)', react:'Ela se inclina mais para você.', pts:3},
+        {loc:'florzinha 🌸', text:'Abraço envolvendo a florzinha 🌸 com cuidado', react:'Ela devolve o abraço com ternura.', pts:4}
+      ]},
+      { q: 'Ação 5 — Você opta por um beijo breve. Qual intensidade e local?', opts:[
+        {loc:'mãos', text:'Beijo rápido na mão', react:'Ela ri com doçura.', pts:1},
+        {loc:'pés', text:'Beijo sutil no pé', react:'Ela solta um som de surpresa agradável.', pts:1},
+        {loc:'coxas', text:'Beijo demorado nas coxas', react:'Ela fica levemente corada.', pts:2},
+        {loc:'🍑', text:'Beijo firme na região posterior (🍑)', react:'Ela corresponde ao gesto com interesse.', pts:3},
+        {loc:'florzinha 🌸', text:'Beijo terno na florzinha 🌸', react:'Ela parece emocionada e próxima.', pts:4}
+      ]},
+      { q: 'Ação 6 — Você decide massagear de modo relaxante. Onde?', opts:[
+        {loc:'mãos', text:'Massagem suave nas mãos', react:'Ela relaxa e sorri.', pts:1},
+        {loc:'pés', text:'Massagem breve nos pés', react:'Ela solta um suspiro de alívio.', pts:1},
+        {loc:'coxas', text:'Massagem prolongada nas coxas', react:'Ela fecha os olhos, receptiva.', pts:2},
+        {loc:'🍑', text:'Massagem atenta na região posterior (🍑)', react:'Ela responde com maior intimidade.', pts:3},
+        {loc:'florzinha 🌸', text:'Massagem gentil na florzinha 🌸', react:'Ela demonstra forte conexão e entrega.', pts:4}
+      ]},
+      { q: 'Ação 7 — Você faz um elogio com contato. Onde toca ao elogiar?', opts:[
+        {loc:'mãos', text:'Tocar as mãos ao elogiar', react:'Ela sorri tímida e agradece.', pts:1},
+        {loc:'pés', text:'Segurar os pés ao elogiar', react:'Ela corresponde com leveza.', pts:1},
+        {loc:'coxas', text:'Tocar a coxa enquanto elogia', react:'Ela cora e aproxima o corpo.', pts:2},
+        {loc:'🍑', text:'Rolar a mão pela região posterior (🍑) ao elogiar', react:'Ela responde com um olhar profundo.', pts:3},
+        {loc:'florzinha 🌸', text:'Tocar a florzinha 🌸 com afeto ao elogiar', react:'Ela se rende ao momento.', pts:4}
+      ]},
+      { q: 'Ação 8 — Você baixa a voz e faz um convite silencioso. Qual gesto acompanha?', opts:[
+        {loc:'mãos', text:'Levar as mãos ao rosto dela', react:'Ela mantém o contato visual.', pts:1},
+        {loc:'pés', text:'Tocar os pés discretamente', react:'Ela dá um sorriso cúmplice.', pts:1},
+        {loc:'coxas', text:'Apoiar a mão na coxa', react:'Ela aproxima mais a perna.', pts:2},
+        {loc:'🍑', text:'Encostar a mão na região posterior (🍑)', react:'Ela demonstra maior confiança.', pts:3},
+        {loc:'florzinha 🌸', text:'Acariciar a florzinha 🌸 com leveza', react:'Ela corresponde com ternura.', pts:4}
+      ]},
+      { q: 'Ação 9 — Você brinca com o clima. Em qual área faz um gesto lúdico?', opts:[
+        {loc:'mãos', text:'Fazer cócegas leves nas mãos', react:'Ela ri e relaxa.', pts:1},
+        {loc:'pés', text:'Tocar os pés de leve para provocar', react:'Ela solta uma gargalhada baixa.', pts:1},
+        {loc:'coxas', text:'Brincadeira de leve na coxa', react:'Ela responde com olhares sugestivos.', pts:2},
+        {loc:'🍑', text:'Tapinha lúdico na região posterior (🍑)', react:'Ela cora e sorri maliciosa.', pts:3},
+        {loc:'florzinha 🌸', text:'Sutileza lúdica na florzinha 🌸', react:'Ela se inclina e participa.', pts:4}
+      ]},
+      { q: 'Ação 10 — Você propõe mudar de posição para maior proximidade. Onde suas mãos repousam?', opts:[
+        {loc:'mãos', text:'Apoiar as mãos nos ombros alheios', react:'Ela se inclina confiante.', pts:1},
+        {loc:'pés', text:'Ajustar os pés para mais contato', react:'Ela se acomoda próxima.', pts:1},
+        {loc:'coxas', text:'Mãos descansando nas coxas', react:'Ela segura sua mão com força leve.', pts:2},
+        {loc:'🍑', text:'Apoiar mão próxima à região posterior (🍑)', react:'Ela responde com calor.', pts:3},
+        {loc:'florzinha 🌸', text:'Apoiar delicadamente na florzinha 🌸', react:'Ela mostra rendição emocional.', pts:4}
+      ]},
+      { q: 'Ação 11 — Você tenta um contato prolongado. Como faz?', opts:[
+        {loc:'mãos', text:'Segurar as mãos por mais tempo', react:'Ela retribui com carinho.', pts:1},
+        {loc:'pés', text:'Rolar os pés para segurar contato', react:'Ela solta um suspiro feliz.', pts:1},
+        {loc:'coxas', text:'Passe prolongado pela coxa', react:'Ela parece mais implicada com o momento.', pts:2},
+        {loc:'🍑', text:'Contato contínuo na região posterior (🍑)', react:'Ela se entrega de forma mais acentuada.', pts:3},
+        {loc:'florzinha 🌸', text:'Contato íntimo e cuidadoso na florzinha 🌸', react:'Ela alcança uma forte entrega emocional.', pts:4}
+      ]},
+      { q: 'Ação 12 — Você aumenta a intensidade do gesto. Onde aplica?', opts:[
+        {loc:'mãos', text:'Apertar a mão carinhosamente', react:'Ela segura firme, encorajadora.', pts:1},
+        {loc:'pés', text:'Movimento íntimo com os pés', react:'Ela se inclina pra frente.', pts:1},
+        {loc:'coxas', text:'Pressão firme nas coxas', react:'Ela responde com maior proximidade.', pts:2},
+        {loc:'🍑', text:'Toque mais assertivo na região posterior (🍑)', react:'Ela entrega-se mais ao momento.', pts:3},
+        {loc:'florzinha 🌸', text:'Toque direto e respeitoso na florzinha 🌸', react:'Ela demonstra forte conexão física e emocional.', pts:4}
+      ]},
+      { q: 'Ação 13 — Você faz uma pausa e observa sinais. Qual sinal busca através de um toque?', opts:[
+        {loc:'mãos', text:'Observar a resposta segurando as mãos', react:'Ela devolve segurança.', pts:1},
+        {loc:'pés', text:'Observar a reação ao tocar os pés', react:'Ela sorri concordando.', pts:1},
+        {loc:'coxas', text:'Testar a receptividade na coxa', react:'Ela responde positivamente.', pts:2},
+        {loc:'🍑', text:'Confirmar reações na região posterior (🍑)', react:'Ela demonstra confiança crescente.', pts:3},
+        {loc:'florzinha 🌸', text:'Ver se a florzinha 🌸 responde com entrega', react:'Ela se entrega emocionalmente.', pts:4}
+      ]},
+      { q: 'Ação 14 — Você troca carícias mais íntimas. Como procede?', opts:[
+        {loc:'mãos', text:'Carícias longas nas mãos', react:'Ela se aquieta e sorri.', pts:1},
+        {loc:'pés', text:'Carícias nos pés para relaxar', react:'Ela entrega-se ao conforto.', pts:1},
+        {loc:'coxas', text:'Carícias contínuas nas coxas', react:'Ela se aproxima corporalmente.', pts:2},
+        {loc:'🍑', text:'Carícias atentas na região posterior (🍑)', react:'Ela demonstra forte excitação emocional.', pts:3},
+        {loc:'florzinha 🌸', text:'Carícias cuidadosas na florzinha 🌸', react:'Ela alcança alto nível de entrega.', pts:4}
+      ]},
+      { q: 'Ação 15 — Você sugere parar se ela preferir. Onde suas mãos pedem confirmação?', opts:[
+        {loc:'mãos', text:'Segurar as mãos e perguntar', react:'Ela concorda com um sorriso.', pts:1},
+        {loc:'pés', text:'Tocar os pés e perguntar', react:'Ela responde com serenidade.', pts:1},
+        {loc:'coxas', text:'Apoiar a mão na coxa e escutar', react:'Ela acena positivamente.', pts:2},
+        {loc:'🍑', text:'Apoiar a mão na região posterior (🍑) para confirmar', react:'Ela responde afirmativamente.', pts:3},
+        {loc:'florzinha 🌸', text:'Aproximar a mão da florzinha 🌸 e perguntar', react:'Ela confirma com emoção.', pts:4}
+      ]},
+      { q: 'Ação 16 — Você intensifica com consentimento explícito. Onde aplica o gesto combinado?', opts:[
+        {loc:'mãos', text:'Gestos combinados nas mãos', react:'Ela participa ativamente.', pts:1},
+        {loc:'pés', text:'Consentimento e toque nos pés', react:'Ela sorri satisfeita.', pts:1},
+        {loc:'coxas', text:'Aumentar o toque nas coxas com acordo', react:'Ela responde com entrega.', pts:2},
+        {loc:'🍑', text:'Aplicar gesto na região posterior (🍑) com concordância', react:'Ela se rende com confiança.', pts:3},
+        {loc:'florzinha 🌸', text:'Aprovação e toque na florzinha 🌸', react:'Ela atinge profunda conexão.', pts:4}
+      ]},
+      { q: 'Ação 17 — Você cria um momento de respeito e cuidado. Onde foca seu zelo?', opts:[
+        {loc:'mãos', text:'Cuidar das mãos dela', react:'Ela agradece com olhar terna.', pts:1},
+        {loc:'pés', text:'Cuidar dos pés com atenção', react:'Ela relaxa completamente.', pts:1},
+        {loc:'coxas', text:'Cuidar com carícias nas coxas', react:'Ela se aproxima confiante.', pts:2},
+        {loc:'🍑', text:'Tratar a região posterior (🍑) com zelo', react:'Ela sente-se protegida e próxima.', pts:3},
+        {loc:'florzinha 🌸', text:'Cuidar da florzinha 🌸 com delicadeza', react:'Ela demonstra entrega emocional plena.', pts:4}
+      ]},
+      { q: 'Ação 18 — Você propõe uma pausa para respirar juntos. Qual toque mantém?', opts:[
+        {loc:'mãos', text:'Segurar as mãos e respirar juntos', react:'Ela encontra tranquilidade.', pts:1},
+        {loc:'pés', text:'Encostar os pés em paz', react:'Ela relaxa e sorri.', pts:1},
+        {loc:'coxas', text:'Apoiando as mãos nas coxas ao respirar', react:'Ela volta a aproximar-se.', pts:2},
+        {loc:'🍑', text:'Apoiar gentilmente a mão na região posterior (🍑)', react:'Ela responde com forte conexão.', pts:3},
+        {loc:'florzinha 🌸', text:'Aproximar a mão da florzinha 🌸 em gesto de cuidado', react:'Ela se entrega emocionalmente mais uma vez.', pts:4}
+      ]},
+      { q: 'Ação 19 — Você tenta um gesto final para selar o momento. Onde concentra?', opts:[
+        {loc:'mãos', text:'Último beijo na mão', react:'Ela sorri satisfeita.', pts:1},
+        {loc:'pés', text:'Toque final nos pés', react:'Ela agradece com carinho.', pts:1},
+        {loc:'coxas', text:'Selar com um toque nas coxas', react:'Ela corresponde calorosamente.', pts:2},
+        {loc:'🍑', text:'Toque final na região posterior (🍑) com ternura', react:'Ela expressa grande apreço.', pts:3},
+        {loc:'florzinha 🌸', text:'Toque final na florzinha 🌸 carregado de sentimento', react:'Ela alcança o ápice da experiência emocional.', pts:4}
+      ]},
+      { q: 'Ação 20 — Você conclui o momento com cuidado. Onde termina o gesto?', opts:[
+        {loc:'mãos', text:'Deixar as mãos entrelaçadas', react:'Ela sorri, acolhida.', pts:1},
+        {loc:'pés', text:'Encostar os pés como despedida íntima', react:'Ela se sente plena.', pts:1},
+        {loc:'coxas', text:'Apoiar a mão na coxa em despedida', react:'Ela se aproxima para um abraço.', pts:2},
+        {loc:'🍑', text:'Dar um último gesto na região posterior (🍑) com respeito', react:'Ela demonstra profundo vínculo.', pts:3},
+        {loc:'florzinha 🌸', text:'Cuidar da florzinha 🌸 com ternura final', react:'Ela alcança o ponto máximo de prazer emocional.', pts:4}
+      ]},
     ];
 
-    let idx=0,path=[];
-    const startBtn=document.getElementById('startBtn');
-    const game=document.getElementById('game');
-    const resultBox=document.getElementById('result');
-    const pathSummary=document.getElementById('pathSummary');
-    const confirmModal=document.getElementById('confirmModal');
-    const ageCheck=document.getElementById('ageCheck');
-    const okConfirm=document.getElementById('okConfirm');
-    const cancelConfirm=document.getElementById('cancelConfirm');
-
-    startBtn.onclick=()=>{confirmModal.style.display='grid'};
-    cancelConfirm.onclick=()=>{confirmModal.style.display='none'};
-    okConfirm.onclick=()=>{
-      if(!ageCheck.checked){alert("Confirme 18+");return}
-      confirmModal.style.display='none';
-      beginGame();
-    };
-
-    function beginGame(){idx=0;path=[];resultBox.style.display='none';renderQuestion();}
-    function renderQuestion(){
-      if(idx>=QUESTIONS.length){finishGame();return}
-      const q=QUESTIONS[idx];
-      game.innerHTML=`<div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<div class="choice" onclick="choose(${i})">${o.t}</div>`).join("")}</div>`;
-    }
-    window.choose=function(i){
-      const opt=QUESTIONS[idx].opts[i];
-      path.push({q:QUESTIONS[idx].q,a:opt.t,r:opt.r,tag:opt.tag});
-      updatePathSummary();
-      idx++;
-      renderQuestion();
-    }
-    function finishGame(){
-      let aprox=path.filter(p=>p.tag=="aprox").length;
-      let dist=path.filter(p=>p.tag=="dist").length;
-      let msg="";
-      if(aprox>dist) msg="Vocês se aproximaram bastante.";
-      else if(dist>aprox) msg="Vocês se afastaram no final.";
-      else msg="Clima terminou neutro.";
-      resultBox.style.display='block';
-      resultBox.innerText=msg;
-    }
-    function updatePathSummary(){
-      pathSummary.innerHTML=path.map(p=>`<div>• ${p.a} → <span class="muted">${p.r}</span></div>`).join("");
-    }
-
-    (function loadAds(){
-      fetch('ads.html').then(r=>r.text()).then(txt=>{document.getElementById('adsBox').innerHTML=txt;}).catch(()=>{document.getElementById('adsBox').innerHTML="ads.html não encontrado";});
-    })();
-  </script>
-</body>
-  </html>
+    /*********************
+     * Configuração jogo
+     *********************/
+    // pontuação: pts por escolha + tempo bonus (quanto mais rápido, maior multiplicador)
+    let idx = 0;
+    let path = [];
+    let score = 0;
+    let questionSt
